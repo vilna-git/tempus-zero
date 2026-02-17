@@ -2,21 +2,15 @@
 
 A wearable silent alarm system using Raspberry Pi Zero W with integrated haptic motors and real-time clock display, designed to wake users without disturbing others in shared living spaces.
 
-## 💡 Project Overview
+##Overview
 
 **Tempus Zero** (Latin: "Time Zero") is a prototype smart alarm watch that uses **haptic feedback** instead of sound to wake users. Perfect for:
 - Shared bedrooms (dorms, family homes)
 - Partners with different schedules  
 - Light sleepers who don't want to disturb others
-- Anyone seeking a gentler wake-up experience
+- People with hearing impairment
 
-### The Problem
-Traditional alarm clocks disrupt everyone in the room, making it difficult for people with different schedules to coexist peacefully.
-
-### Our Solution
-A comfortable wearable device that delivers customizable vibration patterns directly to the user, providing a personal wake-up experience without external noise.
-
-## 🎯 Key Features
+## Main Features
 
 ### Hardware
 - **Raspberry Pi Zero W**: Compact embedded system with WiFi connectivity
@@ -32,12 +26,11 @@ A comfortable wearable device that delivers customizable vibration patterns dire
 - **SSH configuration**: Remote setup via Raspberry Pi controller app
 
 ### User Experience
-- Set alarm time and vibration strength via command-line interface
+- Set alarm time and vibration strength via app
 - LCD shows current time and configured alarm
 - Silent haptic wake-up at specified time
-- Comfortable form factor for overnight wear
 
-## 🏗️ System Architecture
+## System Architecture
 
 ### Hardware Components
 
@@ -59,23 +52,12 @@ The system uses I2C communication protocol to minimize GPIO pin usage:
 - **Power distribution**: 5V from PowerBoost to all components
 - **Motor output**: Dual vibration motors in parallel
 
-![Circuit Diagram](images/FinalCircuit.png)
+![Circuit Diagram](FinalCircuit.png)
 
-### Software Architecture
 
-```
-User Input → SSH Terminal → Python Script → I2C Communication → Hardware Response
-                                    ↓
-                              Alarm Monitoring Loop
-                                    ↓
-                          Time Check (1Hz polling)
-                                    ↓
-                    Match Detected → Trigger Haptic Feedback
-```
+## Main Implementation
 
-## 💻 Code Implementation
-
-### Core Functionality
+### Core Haptic Functionality 
 
 ```python
 # Initialize I2C bus and haptic driver
@@ -99,142 +81,6 @@ while True:
     sleep(1)
 ```
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-**Hardware:**
-- Raspberry Pi Zero W with SD card (8GB+)
-- All components listed in Bill of Materials
-- Soldering equipment
-- 3D printer access (or service)
-
-**Software:**
-- Raspbian OS
-- Python 3.7+
-- Required libraries:
-  ```bash
-  pip install adafruit-circuitpython-drv2605
-  pip install adafruit-extended-bus
-  pip install RPLCD
-  ```
-
-### Installation
-
-1. **Flash Raspberry Pi OS**
-   ```bash
-   # Use Raspberry Pi Imager to flash SD card
-   # Enable SSH during setup
-   ```
-
-2. **Connect to Raspberry Pi**
-   ```bash
-   # Use Raspberry Pi Controller app or terminal
-   ssh pi@raspberrypi.local
-   # Default password: raspberry (change immediately!)
-   ```
-
-3. **Install Dependencies**
-   ```bash
-   sudo apt-get update
-   sudo apt-get install python3-pip i2c-tools
-   sudo pip3 install adafruit-circuitpython-drv2605
-   sudo pip3 install adafruit-extended-bus
-   sudo pip3 install RPLCD
-   ```
-
-4. **Enable I2C**
-   ```bash
-   sudo raspi-config
-   # Interface Options → I2C → Enable
-   sudo reboot
-   ```
-
-5. **Upload Code**
-   ```bash
-   # Copy alarm_controller.py to /home/pi/
-   cd /home/pi
-   python3 alarm_controller.py
-   ```
-
-### Usage
-
-1. Power on the watch
-2. Connect via SSH (or use Raspberry Pi Controller app)
-3. Run the alarm script:
-   ```bash
-   python3 alarm_controller.py
-   ```
-4. Enter alarm time (HH:MM format): `07:30`
-5. Select vibration strength: `Low`, `Medium`, or `High`
-6. Alarm activates at specified time with haptic feedback
-7. Press Ctrl+C to exit
-
-## 📊 Design Evolution
-
-### Version 1: Component Layout
-Initial breadboard prototype with all components exposed for testing.
-
-![Design V1](images/DesignV1_components_.png)
-
-### Version 2: Compact Assembly  
-Integration of components into a wearable form factor.
-
-![Design V2](images/DesignV2.png)
-
-### Version 3: Final Enclosure
-3D-printed housing with ergonomic wrist strap design.
-
-![Design V3](images/DesignV3Top.png)
-![Final Design](images/FinalDesign.png)
-
-## 💰 Project Cost
-
-**Total Project Cost: $7,724**
-
-| Category | Cost |
-|----------|------|
-| Hardware Components | $93.58 |
-| Miscellaneous (tools, materials) | $130.00 |
-| Projected Labor (150 hrs @ $50/hr) | $7,500.00 |
-
-*See [cost_breakdown.pdf](docs/cost_breakdown.pdf) for detailed breakdown*
-
-## 🎓 Academic Context
-
-**Course**: NYU RAD 40 - Student Leadership Development Program  
-**Team**: Oleksandra Kovalenko, Siddhant Bhatnagar, Kushal Mamillapalli  
-**Timeline**: Fall 2023  
-**Deliverables**: Working prototype, documentation, final presentation
-
-### Learning Outcomes
-- ✅ Embedded systems design and programming
-- ✅ I2C communication protocol implementation
-- ✅ 3D CAD modeling (Fusion 360)
-- ✅ Soldering and circuit assembly
-- ✅ User-centered design thinking
-- ✅ Project management (Wrike)
-- ✅ Team collaboration and division of labor
-
-## 📁 Project Structure
-
-```
-tempus-zero/
-├── code/
-│   └── alarm_controller.py    # Main Python firmware
-├── images/
-│   ├── CodeFlowChartFinal.png     # System flowchart
-│   ├── DesignV1_components_.png   # Component layout
-│   ├── DesignV2.png               # Assembly design
-│   ├── DesignV3Top.png            # Enclosure top view
-│   ├── FinalCircuit.png           # Circuit schematic
-│   └── FinalDesign.png            # Final product render
-├── docs/
-│   └── cost_breakdown.pdf         # Bill of materials
-├── README.md                      # This file
-├── LICENSE                        # MIT License
-└── .gitignore                     # Git ignore rules
-```
 
 ## 🔧 Technical Specifications
 
@@ -252,19 +98,8 @@ tempus-zero/
 **Communication:**
 - WiFi: 802.11 b/g/n (2.4GHz)
 - I2C: Bus 1 (display), Bus 3 (haptic controller)
-- SSH: Remote configuration
 
-## 🐛 Known Issues & Future Improvements
-
-### Current Limitations
-- Manual alarm entry (no mobile app interface)
-- Single alarm support
-- No snooze functionality
-- Fabric strap not waterproof
-
-### Planned Enhancements
-- [ ] Bluetooth iOS/Android app for wireless alarm setting
-- [ ] Multiple alarm scheduling
+## Future Improvements
 - [ ] Snooze and gradual wake features
 - [ ] Sleep tracking integration
 - [ ] Waterproof enclosure design
@@ -272,27 +107,6 @@ tempus-zero/
 
 ## 🤝 Team Contributions
 
-**Oleksandra Kovalenko**: Embedded programming, I2C implementation, system integration  
+**Oleksandra Kovalenko**: Embedded programming, 3D modeling/CAD (Fusion 360), enclosure design
 **Siddhant Bhatnagar**: Circuit design, soldering, hardware assembly  
-**Kushal Mamillapalli**: 3D modeling (Fusion 360), enclosure design, CAD iterations
-
-## 📄 License
-
-MIT License - Free to use for educational and personal projects.
-
-## 🙏 Acknowledgments
-
-- NYU MakerSpace for fabrication resources
-- Roman (SLDP Mentor) for project guidance
-- Adafruit for excellent hardware documentation
-- Raspberry Pi Foundation for accessible embedded computing
-
-## 📧 Contact
-
-Questions about the project? Open an issue on GitHub.
-
----
-
-**⚠️ Disclaimer**: This is a student prototype project. Not intended for commercial use or medical applications. Always consult proper alarm systems for critical wake-up requirements.
-
-**Sleep well, wake gently.** 🌙✨
+**Kushal Mamillapalli**: I2C implementation, system integration  
